@@ -65,6 +65,7 @@ def import_repo(email, password):
     fill_repo(email, link_repo)
     try:
         browser.save_screenshot("COMPLETE.png")
+        print(f"[*] [ {email} ] Loading Import...")
         sleep(15)
         get_title = wait(browser,120).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div.css-kyhvoj > div.css-e48442 > div > div > div > div > header > div > div > div > div.sc-hmXxxW.hsWFox > h1'))).text
         print(f"[*] [ {email} ] Import Repo Success: {get_title}")
