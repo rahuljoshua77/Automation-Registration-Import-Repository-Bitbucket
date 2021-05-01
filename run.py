@@ -1,4 +1,4 @@
-from selenium import webdriver
+ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 from selenium.webdriver.common.by import By
@@ -43,12 +43,13 @@ def fill_repo(email, link_repo):
             sleep(5)
     except:
         pass
-
     try:
-        wait(browser,20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'#select2-drop > ul > li.select2-results-dept-0.select2-result.select2-result-selectable.select2-highlighted'))).click()
+        try:
+            wait(browser,20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'#select2-drop > ul > li.select2-results-dept-0.select2-result.select2-result-selectable.select2-highlighted'))).click()
+        except:
+            wait(browser,20).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="select2-drop"]/ul/li[1]/div/span[2]'))).click()
     except:
-        wait(browser,20).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="select2-drop"]/ul/li[1]/div/span[2]'))).click()
-        
+        pass  
     #id_name
     sleep(0.5)
     wait(browser,20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'#import-form > div.buttons-container > div > button'))).click()
@@ -56,6 +57,7 @@ def fill_repo(email, link_repo):
 
 def import_repo(email, password):
     browser.save_screenshot("IMPORT_REPO_2.png")
+ 
     file_list = "link_repo.txt"
     myfile = open(f"{cwd}/{file_list}","r")
     link_repo = myfile.read()
@@ -66,10 +68,9 @@ def import_repo(email, password):
         sleep(15)
         get_title = wait(browser,120).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div.css-kyhvoj > div.css-e48442 > div > div > div > div > header > div > div > div > div.sc-hmXxxW.hsWFox > h1'))).text
         print(f"[*] [ {email} ] IMPORT REPO SUCCESS: {get_title}")
-        
         with open('SuccessIMPORT.txt','a') as f:
             f.write('{0}|{1}|{2}\n'.format(email,password,link_repo))
-         
+        
     except:
         print(f"[*] [ {email} ] IMPORT REPO FAILED, TRY AGAIN!")
         import_repo(email, password)
@@ -77,14 +78,14 @@ def import_repo(email, password):
  
     
 def set_username(email, password):
-    sleep(5)
+    sleep(20)
     browser.save_screenshot("BEFORE_SET_USERNAME.png")
     browser.get('https://bitbucket.org/atlassianid/bb-signup/?next=/account/signin/?redirectCount=1&next=%2Fdashboard%2Foverview')
     print(f"[*] [ {email} ] SET USERNAME")
     sleep(5)
     browser.save_screenshot("SET_USERNAME.png")
     try:
-        element = wait(browser,10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="js-username-field"]')))
+        element = wait(browser,25).until(EC.presence_of_element_located((By.XPATH, '//*[@id="js-username-field"]')))
         get_user = email.split('@')
         get_number = str(random.randint(10, 99))
         username = get_user[0]+get_number
@@ -152,6 +153,10 @@ def login_email(email, password):
     #     sleep(2)
     #     print(e)
 
+def reload(email,password):
+    browser.get('https://mail.google.com/mail/?ui=html')
+    get_otp(email,password)
+
 def extract_otp(email, password):
     global filter_otp
     try:
@@ -212,11 +217,7 @@ def input_otp(email, password, filter_otp):
     browser.save_screenshot("INPUT_OTP.png")
     wait(browser,15).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="login-submit"]/span/span/span'))).click()
     print(f"[*] [ {email} ] SUCCESS INPUT OTP! & REGISTRATION SUCCESS")
-    try:
-        set_username(email,password)
-    except:
-        pass
-    import_repo(email, password)
+    set_username(email,password)
     browser.quit()
     
 def regis(k):
@@ -231,7 +232,9 @@ def regis(k):
     opts.add_argument(f"user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.{random_angka}.{random_angka_dua} Safari/537.36")
     browser = webdriver.Chrome(options=opts, desired_capabilities=dc, executable_path=path_browser)
     browser.get('https://id.atlassian.com/signup')
-   
+    click_element_gsuite(email,password)
+
+def click_element_gsuite(email,password):
     element = wait(browser,15).until(EC.presence_of_element_located((By.XPATH, '//*[@id="google-auth-button"]/span/span/span')))
     element.click() 
     sleep(5)
