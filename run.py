@@ -101,6 +101,7 @@ def set_username(email, password):
         print(f"[*] [ {email} ] Skip Set Username")
 
     print(f"[*] [ {email} ] IMPORT REPO")
+    sleep(5)
     browser.get('https://bitbucket.org/repo/import?workspace')
     sleep(5)
     browser.save_screenshot("IMPORT_REPO.png")
