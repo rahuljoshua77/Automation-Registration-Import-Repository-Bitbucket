@@ -1,4 +1,4 @@
- from selenium import webdriver
+from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 from selenium.webdriver.common.by import By
@@ -36,10 +36,10 @@ def fill_repo(email, link_repo):
         try:
             element = wait(browser,15).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#id_project_name')))
             element.send_keys('Project')
-            print(f"[*] [ {email} ] INPUT PROJECT NAME*")
+            print(f"[*] [ {email} ] Input Project Name*")
         except:
             wait(browser,20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'#s2id_id_project'))).click()
-            print(f"[*] [ {email} ] INPUT PROJECT NAME**")
+            print(f"[*] [ {email} ] Input Project Name**")
             sleep(5)
     except:
         pass
@@ -61,18 +61,18 @@ def import_repo(email, password):
     file_list = "link_repo.txt"
     myfile = open(f"{cwd}/{file_list}","r")
     link_repo = myfile.read()
-    print(f"[*] [ {email} ] IMPORT URL: {link_repo}")
+    print(f"[*] [ {email} ] URL Repo: {link_repo}")
     fill_repo(email, link_repo)
     try:
         browser.save_screenshot("COMPLETE.png")
         sleep(15)
         get_title = wait(browser,120).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#root > div.css-kyhvoj > div.css-e48442 > div > div > div > div > header > div > div > div > div.sc-hmXxxW.hsWFox > h1'))).text
-        print(f"[*] [ {email} ] IMPORT REPO SUCCESS: {get_title}")
+        print(f"[*] [ {email} ] Import Repo Success: {get_title}")
         with open('SuccessIMPORT.txt','a') as f:
             f.write('{0}|{1}|{2}\n'.format(email,password,link_repo))
-        
+        browser.quit()
     except:
-        print(f"[*] [ {email} ] IMPORT REPO FAILED, TRY AGAIN!")
+        print(f"[*] [ {email} ] Import Repo Failed!")
         import_repo(email, password)
     
  
@@ -81,7 +81,7 @@ def set_username(email, password):
     sleep(20)
     browser.save_screenshot("BEFORE_SET_USERNAME.png")
     browser.get('https://bitbucket.org/atlassianid/bb-signup/?next=/account/signin/?redirectCount=1&next=%2Fdashboard%2Foverview')
-    print(f"[*] [ {email} ] SET USERNAME")
+    print(f"[*] [ {email} ] Set Username")
     sleep(5)
     browser.save_screenshot("SET_USERNAME.png")
     try:
@@ -91,10 +91,10 @@ def set_username(email, password):
         username = get_user[0]+get_number
         element.send_keys(username)
         element.send_keys(Keys.ENTER)
-        print(f"[*] [ {email} ] SUCCESS SET USERNAME")
+        print(f"[*] [ {email} ] Success Set Username")
         browser.save_screenshot("SUCCESS_SET.png")
     except:
-        print(f"[*] [ {email} ] SKIP SET USERNAME")
+        print(f"[*] [ {email} ] Skip Set Username")
 
     print(f"[*] [ {email} ] IMPORT REPO")
     browser.get('https://bitbucket.org/repo/import?workspace')
@@ -163,7 +163,7 @@ def extract_otp(email, password):
         browser.save_screenshot("GET_OTP_BEFORE_TIGA.png")
         sleep(2)
         filter_otp = wait(browser,20).until(EC.presence_of_element_located((By.CSS_SELECTOR,"body > table:nth-child(16) > tbody > tr > td:nth-child(2) > table:nth-child(1) > tbody > tr > td:nth-child(2) > table:nth-child(4) > tbody > tr > td > table:nth-child(5) > tbody > tr:nth-child(4) > td > div > div > table > tbody > tr > td > div > div > table > tbody > tr > td > h3"))).text 
-        print(f"[*] [ {email} ] EXTRACT OTP")
+        print(f"[*] [ {email} ] Extract OTP")
     except:
         try:
             print(f"[*] [ {email} ] Trying to Extract OTP")
@@ -216,10 +216,12 @@ def input_otp(email, password, filter_otp):
     sleep(0.5)
     browser.save_screenshot("INPUT_OTP.png")
     wait(browser,15).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="login-submit"]/span/span/span'))).click()
-    print(f"[*] [ {email} ] SUCCESS INPUT OTP! & REGISTRATION SUCCESS")
-    set_username(email,password)
-    browser.quit()
-    
+    print(f"[*] [ {email} ] Success Input OTP")
+    try:
+        set_username(email,password)
+    except:
+        browser.quit()
+
 def regis(k):
     global browser
     global element
