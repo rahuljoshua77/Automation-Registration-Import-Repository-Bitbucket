@@ -216,8 +216,18 @@ def input_otp(email, password, filter_otp):
     enter_otp.send_keys(filter_otp)
     sleep(0.5)
     browser.save_screenshot("INPUT_OTP.png")
-    wait(browser,15).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="login-submit"]/span/span/span'))).click()
-    print(f"[*] [ {email} ] Success Input OTP")
+    try:    
+        wait(browser,15).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="login-submit"]/span/span/span'))).click()
+        print(f"[*] [ {email} ] Success Input OTP")
+    except:
+        try:
+            browser.refresh()
+            enter_otp.send_keys(filter_otp)
+            sleep(1)
+            wait(browser,15).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="login-submit"]/span/span/span'))).click()
+            print(f"[*] [ {email} ] Success Input OTP")
+        except:
+            enter_otp.send_keys(Keys.ENTER)
     try:
         set_username(email,password)
     except:
