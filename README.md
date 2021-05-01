@@ -1,5 +1,5 @@
  
-# What is Automation Registration Import Repository Bitbucket? 
+# What is Automation Registration and Import Repository Bitbucket? 
 
 The tool that can login/registration to Bitbucket + Get OTP + Import Repo with automation by login Gsuite/Gmail.
 
