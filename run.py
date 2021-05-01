@@ -29,9 +29,12 @@ print("[*] Author: RJD")
 
 def fill_repo(email, link_repo):
     sleep(10)
-    element = wait(browser,15).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#id_url')))
-    element.send_keys(link_repo)
-    #id_project_name
+    try:
+        element = wait(browser,15).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#id_url')))
+        element.send_keys(link_repo)
+        #id_project_name
+    except:
+        reload() 
     try:
         try:
             element = wait(browser,15).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#id_project_name')))
@@ -102,6 +105,12 @@ def set_username(email, password):
     sleep(5)
     browser.save_screenshot("IMPORT_REPO.png")
     import_repo(email, password)    
+
+def reload():
+    browser.get('https://bitbucket.org/repo/import?workspace')
+    sleep(5)
+    browser.save_screenshot("IMPORT_REPO.png")
+    import_repo(email, password)  
 
 def accept():
     sleep(0.5)
