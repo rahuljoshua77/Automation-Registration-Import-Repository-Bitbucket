@@ -36,7 +36,7 @@ def fill_repo(email, link_repo):
         element.send_keys(link_repo)
         #id_project_name
     except:
-        reload() 
+        reload(email, password) 
     try:
         try:
             element = wait(browser,15).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#id_project_name')))
@@ -81,8 +81,6 @@ def import_repo(email, password):
         print(f"[*] [ {email} ] Import Repo Failed!")
         import_repo(email, password)
     
- 
-    
 def set_username(email, password):
     sleep(20)
     browser.save_screenshot("BEFORE_SET_USERNAME.png")
@@ -109,7 +107,7 @@ def set_username(email, password):
     browser.save_screenshot("IMPORT_REPO.png")
     import_repo(email, password)    
 
-def reload():
+def reload(email, password):
     browser.get('https://bitbucket.org/repo/import?workspace')
     sleep(5)
     browser.save_screenshot("IMPORT_REPO.png")
@@ -172,10 +170,6 @@ def login_email(email, password):
     # except Exception as e:
     #     sleep(2)
     #     print(e)
-
-def reload(email,password):
-    browser.get('https://mail.google.com/mail/?ui=html')
-    get_otp(email,password)
 
 def extract_otp(email, password):
     global filter_otp
