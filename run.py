@@ -20,6 +20,8 @@ opts.add_argument('log-level=3')
 dc = DesiredCapabilities.CHROME
 dc['loggingPrefs'] = {'driver': 'OFF', 'server': 'OFF', 'browser': 'OFF'}
 opts.add_argument('--ignore-ssl-errors=yes')
+opts.add_argument("--start-maximized")
+opts.add_argument("--start-fullscreen")
 opts.add_argument('--ignore-certificate-errors')
 opts.add_argument('--disable-blink-features=AutomationControlled')
 opts.add_experimental_option('excludeSwitches', ['enable-logging'])
