@@ -150,18 +150,19 @@ def login_email(email, password):
     except:
         pass
     try:
-        wait(browser,10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="didnt-get-an-email-start-again"]/span/span/span'))).click()
+        test_saja = wait(browser,10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="didnt-get-an-email-start-again"]/span/span/span'))).click()
+        test_saja.sendKeys(Keys.PAGE_DOWN);
     except:
         browser.refresh()
         sleep(5)
-        wait(browser,10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="didnt-get-an-email-start-again"]/span/span/span'))).click()
+        test_saja = wait(browser,10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="didnt-get-an-email-start-again"]/span/span/span'))).click()
      
     try:
        sleep(2)
        wait(browser,10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ' #\34 c7e890a-96f1-4769-ac22-715ac8bcf7cf > div > div.sc-dVhcbM.bRszlg > button > span'))).click()
     except:
        pass
-     
+    
     sleep(5)
     browser.execute_script("window.open('https://mail.google.com/mail/?ui=html');")
     browser.switch_to.window(browser.window_handles[1])
